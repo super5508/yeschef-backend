@@ -1,0 +1,42 @@
+{
+  "name": "yeschef-be",
+  "version": "1.0.0",
+  "description": "yeschef web app express backend",
+  "main": "index.js",
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.3.0",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.2.0",
+    "mongodb": "^3.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "babel-loader": "^8.0.6",
+    "babel-polyfill": "^6.26.0",
+    "cross-env": "^6.0.0",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "build:server:once": "cross-env NODE_ENV=development webpack --config server.config",
+    "dev:server": "npm run build:server:once && npm-run-all --parallel nodemon:dev watch:server",
+    "watch:server": "cross-env NODE_ENV=development webpack --config server.config --watch -d",
+    "nodemon:dev": "cross-env CONFIG_ENV=development NODE_ENV=development node-dev server.prod.js",
+    "nodemon:prod": "cross-env CONFIG_ENV=production NODE_ENV=development node-dev server.prod.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeschefme/yeschef-be.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yeschefme/yeschef-be/issues"
+  },
+  "homepage": "https://github.com/yeschefme/yeschef-be#readme"
+}

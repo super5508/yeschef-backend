@@ -1,0 +1,79 @@
+let esClient;
+let LessonsModule;
+
+exports.init = (_esClient, _lessonsModule) => {
+    esClient = _esClient;
+    LessonsModule = _lessonsModule;
+}
+
+exports.getClassList = async (req, res) => {
+    res.set("Cache-Control", "max-age=86400");
+    let response;
+    try {
+        const classesResponse = await esClient.search({
+            index: "classes",
+            size: 500,
+            body: {
+                query: {
+                    bool: {
+                        must: [],
+                        filter: [{
+                            bool: {
+                                must_not: {
+                                    multi_match: {
+                                        type: "best_fields",
+                                        query: "isStaging = true",
+                                        lenient: true
+                                    }
+                                }
+                            }
+                        }]
+                    }
+                }
+            }
+        })
+
+        const classesArray = classesResponse.body.hits.hits;
+        response = JSON.stringify(classesArray.map(_class => {
+            const { chefName, classTitle, chefImg, comingSoon } = _class._source;
+            return {
+                id: _class._id,
+                chefName,
+                classTitle,
+                chefImg,
+                comingSoon: comingSoon || false
+            }
+        }));
+        console.log(response);
+    } catch (e) {
+        const errMsg = "error in getting class List data";
+        console.warn(errMsg);
+        console.warn(e);
+        response = errMsg;
+        res.status(500)
+    }
+    res.send(response);
+}
+
+exports.getInfo = async (req, res) => {
+    res.set("Cache-Control", "max-age=86400");
+    let response;
+    try {
+        const getClassResponse = await esClient.get({
+            index: 'classes',
+            id: req.params.id
+        });
+
+        const classInfoObj = getClassResponse.body._source;
+        const lessonsList = await LessonsModule.getLiteLessonsByIdList(classInfoObj.lessons);
+
+        response = JSON.stringify({ ...classInfoObj, lessons: lessonsList });
+    } catch (e) {
+        const errMsg = "error in getting class's data";
+        console.warn(errMsg);
+        console.warn(e);
+        response = errMsg;
+        res.status(500)
+    }
+    res.send(response);
+}
