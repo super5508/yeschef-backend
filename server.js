@@ -61,6 +61,10 @@ start = async () => {
     app.post('/user', Users.update);
     app.get('/user', Users.getUserData);
 
+    app.get('/hc', (req, res) => {
+        res.end("I'm Alive!");
+    });
+
     app.get('/class/:id', Classes.getInfo);
     app.get('/classes/', Classes.getClassList);
 
