@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const UsersMongo = require('./MongoImpl/UsersMongo');
 
 var serviceAccount = {
     "type": "service_account",
@@ -18,4 +19,10 @@ admin.initializeApp({
     databaseURL: "https://yeschef-7b155.firebaseio.com/"
 });
 
-module.exports = { admin };
+const isAdmin = async (authToken) => {
+    const decodedToken = await admin.auth().verifyIdToken(authToken);
+    const executingUser = UsersMongo.getUserDataMongo(decodedToken.user_id);
+    return executingUser.isAdmin;
+}
+
+module.exports = { admin, isAdmin };

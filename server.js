@@ -8,6 +8,8 @@ const Chefs = require('./modules/Chefs')
 const Classes = require('./modules/Classes')
 const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
+const Admin = require('./modules/Admin');
+
 const { Client } = require('@elastic/elasticsearch')
 start = async () => {
     const esClient = new Client({
@@ -67,11 +69,10 @@ start = async () => {
 
     app.get('/class/:id', Classes.getInfo);
     app.get('/classes/', Classes.getClassList);
-
-    // app.get('/lesson/:id', Lessons.getInfo);
     app.get('/class/:classId/lesson/:lessonIndex', Lessons.getInfoByClassAndIndex);
+
+    app.post('/docs/', Admin.adminDocsUpdate);
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
-
 start();

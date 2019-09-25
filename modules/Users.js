@@ -1,4 +1,4 @@
-const admin = require('./FBAdmin').admin;
+const { admin, isAdmin } = require('./FBAdmin').admin;
 const UsersMongo = require('./MongoImpl/UsersMongo');
 
 const updateUserData = (uid, data) => {
@@ -12,6 +12,29 @@ const updateUserData = (uid, data) => {
     }
 }
 
+const adminUpdateUser = async (req, res) => {
+    const body = req.body;
+    if (isAdmin(body.authToken)) {
+        const userRecord = await admin.auth().getUserByEmail(req.params.email);
+        const id = userRecord.uid;
+        UsersMongo.updateUserDataMongo(id, body.data);
+        res.send('');
+    } else {
+        res.status(401).end();
+    }
+}
+
+const adminGetUser = async (req, res) => {
+    const body = req.body;
+    if (isAdmin(body.authToken)) {
+        const userRecord = await admin.auth().getUserByEmail(req.params.email);
+        const id = userRecord.uid;
+        const user = await UsersMongo.getUserDataMongo(id);
+        res.end(JSON.stringify(user));
+    } else {
+        res.status(401).end();
+    }
+}
 
 const update = async (req, res) => {
     const body = req.body;
@@ -35,5 +58,7 @@ const getUserData = async (req, res) => {
 module.exports = {
     update,
     updateUserData,
-    getUserData
+    getUserData,
+    adminUpdateUser,
+    adminGetUser
 }

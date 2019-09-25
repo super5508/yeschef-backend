@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 let config = require('../../config');
+const notionKeyToDbKey = require('../../Notion2DB').notionKeyToDbKey;
 config = config[process.env.CONFIG_ENV || "development"];
-
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 const getConnection = () => {
@@ -17,27 +17,43 @@ const getConnection = () => {
         } else {
             resolve(client);
         }
+
     });
-};
+}
 
-const updateUserDataMongo = (req, userId, data) => {
-    return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
-            const usersCollection = client.db("runtime").collection("users");
+const replaceDocsMongo = async (db, collectionName, docIdKey, dataArray) => {
+    return new Promise(async (resolve, reject) => {
+        const client = await getConnection();
+        const collection = client.db(db).collection(collectionName);
+        const replacePromisesArr = [];
+        docIdKey = notionKeyToDbKey(docIdKey);
+
+        dataArray.forEach(dataRow => {
+            //convert dataRow keys
+            const dbDataRow = {};
+            Object.keys(dataRow).forEach(notionKey => {
+                if (notionKey == "undefined") return;
+                dbDataRow[notionKeyToDbKey(notionKey)] = dataRow[notionKey];
+            });
+
             // perform actions on the collection object
-            usersCollection.updateOne({ userId },
-                { $set: { ...data } },
-                { upsert: true }).then((result) => {
-                    resolve(result);
-                }).catch((err) => {
-                    reject(err);
-                });
+            const query = {};
+            query[docIdKey] = dbDataRow[docIdKey];
+            collection.replaceOne(query,
+                { $set: { ...dbDataRow } },
+                { upsert: true });
+        })
 
+
+        Promise.all(replacePromisesArr).then(values => {
+            resolve(values);
+        }).catch(error => {
+            reject(error);
         });
     });
 };
 
-const getUserDataMongo = (userId) => {
+const getDocMongo = (userId) => {
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const usersCollection = client.db("runtime").collection("users");
@@ -49,9 +65,8 @@ const getUserDataMongo = (userId) => {
             });
         });
     });
-};
+}
 
 module.exports = {
-    updateUserDataMongo,
-    getUserDataMongo
+    replaceDocsMongo
 }

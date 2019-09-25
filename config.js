@@ -5,8 +5,7 @@ const production = {
 };
 const development = {
     "mongo": {
-        "url_": "mongodb+srv://yc-be-dev:W26Fbq9G2Xq92dH@dev-nppzv.mongodb.net/test?retryWrites=true&w=majority",
-        "url": "mongodb+srv://yc-be-dev:6Fbq9G2Xq92dH@dev-nppzv.mongodb.net/test?retryWrites=true&w=majority"
+        "url": "mongodb+srv://yc-be-dev:W26Fbq9G2Xq92dH@dev-nppzv.mongodb.net/test?retryWrites=true&w=majority"
     }
 }
 
