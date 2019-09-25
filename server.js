@@ -73,6 +73,10 @@ start = async () => {
 
     app.post('/docs/', Admin.adminDocsUpdate);
 
+    //-------------------------------------------------admin-----------------------
+    app.get('/user/:email', Admin.adminGetUser);
+    app.post('/user/:email', Admin.adminUpdateUser);
+
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
 start();

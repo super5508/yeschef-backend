@@ -20,7 +20,7 @@ const getConnection = () => {
     });
 };
 
-const updateUserDataMongo = (req, userId, data) => {
+const updateUserDataMongo = (userId, data) => {
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const usersCollection = client.db("runtime").collection("users");

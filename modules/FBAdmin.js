@@ -19,9 +19,11 @@ admin.initializeApp({
     databaseURL: "https://yeschef-7b155.firebaseio.com/"
 });
 
-const isAdmin = async (authToken) => {
+const isAdmin = async (req) => {
+    const authToken = req.headers.authtoken;
+    if (!authToken) return false;
     const decodedToken = await admin.auth().verifyIdToken(authToken);
-    const executingUser = UsersMongo.getUserDataMongo(decodedToken.user_id);
+    const executingUser = await UsersMongo.getUserDataMongo(decodedToken.user_id);
     return executingUser.isAdmin;
 }
 
