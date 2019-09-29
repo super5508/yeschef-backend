@@ -40,6 +40,7 @@ start = async () => {
 
     // Automatically allow cross-origin requests
     app.use(cors({
+        optionsSuccessStatus: 200,
         origin: (origin, callback) => {
             // allow requests with no origin 
             // (like mobile apps or curl requests)
@@ -62,6 +63,7 @@ start = async () => {
 
         //intercepts OPTIONS method
         if ('OPTIONS' === req.method) {
+            console.log("response to OPTION");
             //respond with 200
             res.send(200);
         }
