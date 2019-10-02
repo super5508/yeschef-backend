@@ -2,6 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 let config = require('../../config');
 const notionKeyToDbKey = require('../../Notion2DB').notionKeyToDbKey;
 config = config[process.env.CONFIG_ENV || "development"];
+console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 const getConnection = () => {
