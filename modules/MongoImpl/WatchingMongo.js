@@ -57,7 +57,25 @@ const getWatchingDataMongo = (userId) => {
     });
 };
 
+const addNewWatching = (userId) => {
+    console.log('create a new watchHistory');
+    return new Promise(function (resolve, reject) {
+        getConnection().then((client) => {
+            const historyCollection = client.db("runtime").collection("userWatching");
+            // perform actions on the collection object
+            historyCollection.insertOne({
+                id: userId,
+                lessonId: -1,
+                progress: 0,
+            })
+        }).catch((err) => {
+            reject(err);
+        });
+    });
+}
+
 module.exports = {
   updateWatchingDataMongo,
-  getWatchingDataMongo
+  getWatchingDataMongo,
+  addNewWatching
 }

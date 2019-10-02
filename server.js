@@ -9,6 +9,7 @@ const Classes = require('./modules/Classes')
 const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
+const UserWatching = require('./modules/UserWatching');
 
 const { Client } = require('@elastic/elasticsearch')
 start = async () => {
@@ -83,6 +84,8 @@ start = async () => {
 
     app.post('/user', Users.update);
     app.get('/user', Users.getUserData);
+
+    app.get('/history/:user', UserWatching.getWatchingData);
 
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
