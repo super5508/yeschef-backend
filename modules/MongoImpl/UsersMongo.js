@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 let config = require('../../config');
 config = config[process.env.CONFIG_ENV || "development"];
+console.log("process.env = " + process.env);
 console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
 
 const uri = config.mongo.url;
@@ -39,6 +40,7 @@ const updateUserDataMongo = (userId, data) => {
 };
 
 const getUserDataMongo = (userId) => {
+    console.log('get the users data from mongo')
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const usersCollection = client.db("runtime").collection("users");
