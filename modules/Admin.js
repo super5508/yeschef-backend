@@ -37,6 +37,7 @@ const adminGetUser = async (req, res) => {
 
 const adminDocsUpdate = async (req, res) => {
     const body = req.body;
+    console.log('check if user is admin');
     if (await isAdmin(req)) {
         const result = await docsMongo.replaceDocsMongo(body.db, body.collection, body.docIdKey, body.data);
         res.end(result);
