@@ -51,7 +51,9 @@ const getUserDataMongo = (userId) => {
             }).catch((err) => {
                 reject(err);
             });
-        });
+        }).catch((err) => {
+            reject(err);
+        };
     });
 };
 
