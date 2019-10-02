@@ -53,7 +53,7 @@ const getUserDataMongo = (userId) => {
             });
         }).catch((err) => {
             reject(err);
-        };
+        });
     });
 };
 
