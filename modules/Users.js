@@ -1,4 +1,4 @@
-const { admin, isAdmin } = require('./FBAdmin').admin;
+const { admin, isAdmin } = require('./FBAdmin');
 const UsersMongo = require('./MongoImpl/UsersMongo');
 
 const updateUserData = (uid, data) => {
