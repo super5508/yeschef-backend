@@ -54,6 +54,9 @@ start = async () => {
             return callback(null, true);
         }
     }));
+
+    app.options('*', cors());
+
     app.use(bodyParser.json());
 
     app.use(function (req, res, next) {
