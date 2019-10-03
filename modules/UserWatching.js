@@ -10,6 +10,7 @@ const getWatchingData = async (req, res) => {
   const id = req.params.user;
 
   const snapshot = await WatchingMongo.getWatchingDataMongo(id);
+  console.log(snapshot, "================ snapshot =================");
   if (snapshot === null) {
     snapshot = await WatchingMongo.addNewWatching(id);
     res.end('created');

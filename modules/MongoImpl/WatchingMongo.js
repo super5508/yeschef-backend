@@ -48,13 +48,23 @@ const getWatchingDataMongo = (userId) => {
             // perform actions on the collection object
             const chefCollection = client.db("runtime").collection("classes");
             historyCollection.findOne({ id: userId }).then((results) => {
-                chefCollection.findOne({ classId: results.lessonId }).then(res => {
-                    resolve({
-                        ...results,
-                        name: res.chefClass,
-                        link: res.classId
+                if (results !== null) {
+                    chefCollection.findOne({ classId: results.lessonId }).then(res => {
+                        if (res !== null) {
+                            resolve({
+                                ...results,
+                                name: res.name,
+                                link: res.classId
+                            });
+                        } else {
+                            resolve(results);
+                        }
+                    }).catch(err => {
+                        reject(err);
                     });
-                })
+                } else {
+                    resolve(results);
+                }
             }).catch((err) => {
                 reject(err);
             });
@@ -72,7 +82,7 @@ const addNewWatching = (userId) => {
             // perform actions on the collection object
             historyCollection.insertOne({
                 id: userId,
-                lessonId: 'c01',
+                lessonId: -1,
                 progress: 0,
             })
         }).catch((err) => {
