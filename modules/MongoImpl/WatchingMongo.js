@@ -41,7 +41,7 @@ const updateWatchingDataMongo = (userId, data) => {
 };
 
 const getWatchingDataMongo = (userId) => {
-    console.log(`get watching history of user ${userId}`);
+    console.log('get watching history of user ' + userId);
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
@@ -75,7 +75,7 @@ const getWatchingDataMongo = (userId) => {
 };
 
 const addNewWatching = (userId) => {
-    console.log(`create a new watchHistory for user ${userId}`);
+    console.log('create a new watchHistory for user ' + userId);
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
