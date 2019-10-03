@@ -41,14 +41,13 @@ const updateWatchingDataMongo = (userId, data) => {
 };
 
 const getWatchingDataMongo = (userId) => {
-    console.log('get the users data from mongo')
+    console.log(`get watching history of user ${userId}`);
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
             // perform actions on the collection object
             const chefCollection = client.db("runtime").collection("classes");
             historyCollection.findOne({ id: userId }).then((results) => {
-                console.log(results);
                 chefCollection.findOne({ classId: results.lessonId }).then(res => {
                     resolve({
                         ...results,
@@ -66,7 +65,7 @@ const getWatchingDataMongo = (userId) => {
 };
 
 const addNewWatching = (userId) => {
-    console.log('create a new watchHistory');
+    console.log(`create a new watchHistory for user ${userId}`);
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
