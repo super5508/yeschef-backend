@@ -87,6 +87,7 @@ start = async () => {
     app.get('/user', Users.getUserData);
 
     app.post('/feedback',Feedback.addFeedback);
+    app.get('/feedback', Feedback.getFeedback);
 
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
