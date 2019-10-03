@@ -1,22 +1,23 @@
 const { admin } = require('./FBAdmin');
 const WatchingMongo = require('./MongoImpl/WatchingMongo');
 
-const updateWatchingData = (uid, data) => {
-  
+const updateWatchingData = async (uid,data) => {
+  const id = data.req.body.id;
+  await WatchingMongo.updateWatchingDataMongo(id, data.req.body);
 }
 
 const getWatchingData = async (req, res) => {
-    const id = req.params.user;
-    console.log(`Getting History of User ${id}`);
+  const id = req.params.user;
 
-    const snapshot = await WatchingMongo.getWatchingDataMongo(id);
-    if (snapshot === null)
-      await WatchingMongo.addNewWatching(id);
-    //const snapshot = (await admin.database().ref('/users/' + id).once('value')).val();
-    res.end(JSON.stringify(snapshot));
+  const snapshot = await WatchingMongo.getWatchingDataMongo(id);
+  if (snapshot === null) {
+    snapshot = await WatchingMongo.addNewWatching(id);
+    res.end('created');
+  }
+  res.end(JSON.stringify(snapshot));
 }
 
 module.exports = {
-    updateWatchingData,
-    getWatchingData,
+  updateWatchingData,
+  getWatchingData,
 }

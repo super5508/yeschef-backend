@@ -28,7 +28,7 @@ const updateWatchingDataMongo = (userId, data) => {
         getConnection().then((client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
             // perform actions on the collection object
-            historyCollection.updateOne({ userId },
+            historyCollection.updateOne({ id: userId },
                 { $set: { ...data } },
                 { upsert: true }).then((result) => {
                     resolve(result);
@@ -46,8 +46,16 @@ const getWatchingDataMongo = (userId) => {
         getConnection().then((client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
             // perform actions on the collection object
-            historyCollection.findOne({ userId }).then((results) => {
-                resolve(results);
+            const chefCollection = client.db("runtime").collection("classes");
+            historyCollection.findOne({ id: userId }).then((results) => {
+                console.log(results);
+                chefCollection.findOne({ classId: results.lessonId }).then(res => {
+                    resolve({
+                        ...results,
+                        name: res.chefClass,
+                        link: res.classId
+                    });
+                })
             }).catch((err) => {
                 reject(err);
             });
@@ -65,7 +73,7 @@ const addNewWatching = (userId) => {
             // perform actions on the collection object
             historyCollection.insertOne({
                 id: userId,
-                lessonId: -1,
+                lessonId: 'c01',
                 progress: 0,
             })
         }).catch((err) => {

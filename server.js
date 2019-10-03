@@ -86,6 +86,7 @@ start = async () => {
     app.get('/user', Users.getUserData);
 
     app.get('/history/:user', UserWatching.getWatchingData);
+    app.post('/history', UserWatching.updateWatchingData);
 
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
