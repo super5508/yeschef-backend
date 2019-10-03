@@ -9,17 +9,18 @@ const Classes = require('./modules/Classes')
 const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
+const Feedback = require('./modules/Feedbacks');
 
 const { Client } = require('@elastic/elasticsearch')
 start = async () => {
     const esClient = new Client({
         cloud: {
-            id: 'yeschef:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyRjMTcyZjdjYjVjYjY0YzUxYjE1MWYxNGE5Nzk0ODg3ZiQ3Yzc1OWFkYzVmOGQ0Mjk5YmYzYzRjNTQ5ZTFjYWE0Mw=='
+            id: 'yeschef-dev:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyRiYzAxNjdhNTU3NTM0NTY5OGRiOGExYTg3ZWI0ZWI0YyQ4NTAzZDViNDU2Zjg0MDc1OGQ1NWY5MGVkOGZmYTVjMQ=='
         },
         auth: {
             // apiKey: '8s1dqJAIS7KnUHdb5tfamg'
-            username: "yc-be",
-            password: "wV27Znc5LHGRdiq"
+            username: "yc-be-dev",
+            password: "LnWJpBE4sCrYrQX"
         }
     });
 
@@ -35,6 +36,7 @@ start = async () => {
     Chefs.init(esClient);
     Lessons.init(esClient);
     Classes.init(esClient, Lessons);
+    Feedback.init(esClient);
 
     const allowedOrigins = ['http://localhost:3000', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
@@ -83,6 +85,8 @@ start = async () => {
 
     app.post('/user', Users.update);
     app.get('/user', Users.getUserData);
+
+    app.post('/feedback',Feedback.addFeedback);
 
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
