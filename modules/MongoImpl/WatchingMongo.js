@@ -49,12 +49,11 @@ const getWatchingDataMongo = (userId) => {
             const chefCollection = client.db("runtime").collection("classes");
             historyCollection.findOne({ id: userId }).then((results) => {
                 if (results !== null) {
-                    chefCollection.findOne({ classId: results.lessonId }).then(res => {
+                    chefCollection.findOne({ classId: results.classId }).then(res => {
                         if (res !== null) {
                             resolve({
                                 ...results,
                                 name: res.name,
-                                link: res.classId
                             });
                         } else {
                             resolve(results);
