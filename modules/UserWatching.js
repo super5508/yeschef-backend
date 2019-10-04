@@ -1,9 +1,10 @@
 const { admin } = require('./FBAdmin');
 const WatchingMongo = require('./MongoImpl/WatchingMongo');
 
-const updateWatchingData = async (uid,data) => {
-  const id = data.req.body.id;
-  await WatchingMongo.updateWatchingDataMongo(id, data.req.body);
+const updateWatchingData = async (req,res) => {
+  const id = req.body.userId;
+  const response = await WatchingMongo.updateWatchingDataMongo(id, req.body);
+  res.end('success');
 }
 
 const getWatchingData = async (req, res) => {
