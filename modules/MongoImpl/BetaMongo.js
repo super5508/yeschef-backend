@@ -8,35 +8,35 @@ console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 const getConnection = () => {
-    return new Promise(function (resolve, reject) {
-        if (!client.isConnected()) {
-            client.connect(err => {
-                if (err) {
-                  reject(err);
-                  return;
-                }
-                resolve(client);
-            });
-        } else {
-          resolve(client);
+  return new Promise(function (resolve, reject) {
+    if (!client.isConnected()) {
+      client.connect(err => {
+        if (err) {
+          reject(err);
+          return;
         }
-    });
+        resolve(client);
+      });
+    } else {
+      resolve(client);
+    }
+  });
 };
 
 const getBetaDataMongo = () => {
-    console.log('get beta news list');
-    
-    return new Promise(function (resolve, reject) {
-      getConnection().then((client) => {
-        const betaCollection = client.db("runtime").collection("betaNews");
-          betaCollection.find({}).toArray((err, res) => {
-            if (err) reject(err);
-            resolve(res);
-          })
-        }).catch((err) => {
-          reject(err);
-        });
+  console.log('get beta news list');
+  
+  return new Promise(function (resolve, reject) {
+    getConnection().then((client) => {
+      const betaCollection = client.db("runtime").collection("betaNews");
+        betaCollection.find({}).toArray((err, res) => {
+          if (err) reject(err);
+          resolve(res);
+        })
+      }).catch((err) => {
+        reject(err);
     });
+  });
 };
 
 const addNewBeta = (data) => {
