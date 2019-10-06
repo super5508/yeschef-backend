@@ -1,8 +1,8 @@
-let esClient;
+const { esClient } = require('./ESImpl/esClientWrapper');
 
-exports.init = (_esClient) => {
-    esClient = _esClient;
-}
+// exports.init = (_esClient) => {
+//     esClient = _esClient;
+// }
 
 exports.getLiteLessonsByIdList = async (lessonIdsList) => {
     const docs = lessonIdsList.map(lessonId => {

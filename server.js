@@ -10,19 +10,7 @@ const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
 
-const { Client } = require('@elastic/elasticsearch')
 start = async () => {
-    const esClient = new Client({
-        cloud: {
-            id: 'yeschef:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyRjMTcyZjdjYjVjYjY0YzUxYjE1MWYxNGE5Nzk0ODg3ZiQ3Yzc1OWFkYzVmOGQ0Mjk5YmYzYzRjNTQ5ZTFjYWE0Mw=='
-        },
-        auth: {
-            // apiKey: '8s1dqJAIS7KnUHdb5tfamg'
-            username: "yc-be",
-            password: "wV27Znc5LHGRdiq"
-        }
-    });
-
     // Default config options
     // const defaultOptions = {
     //     baseURL: 'https://c172f7cb5cb64c51b151f14a9794887f.us-east-1.aws.found.io:9243',
@@ -32,9 +20,9 @@ start = async () => {
     // };
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
-    Chefs.init(esClient);
-    Lessons.init(esClient);
-    Classes.init(esClient, Lessons);
+    //Chefs.init(esClient);
+    //Lessons.init(esClient);
+    //Classes.init(esClient, Lessons);
 
     const allowedOrigins = ['http://localhost:3000', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
@@ -57,8 +45,7 @@ start = async () => {
 
     app.options('*', cors());
 
-    app.use(bodyParser.json());
-
+    app.use(bodyParser.json({ limit: '50mb' }));
     app.use(function (req, res, next) {
         //res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
@@ -93,6 +80,7 @@ start = async () => {
     app.get('/class/:classId/lesson/:lessonIndex', Lessons.getInfoByClassAndIndex);
 
     app.post('/docs/', Admin.adminDocsUpdate);
+    app.post('/docs/generate/', Admin.adminDocsGenerate);
 
     //-------------------------------------------------admin-----------------------
     app.get('/user/:email', Admin.adminGetUser);
