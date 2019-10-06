@@ -100,6 +100,7 @@ start = async () => {
     app.post('/user/:email', Admin.adminUpdateUser);
 
     app.get('/beta', Beta.getNewsData);
+    app.post('/addbeta', Beta.addNewsBeta);
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }

@@ -26,9 +26,9 @@ const getConnection = () => {
 const updateBetaDataMongo = (newsId, data) => {
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
-            const newsCollection = client.db("runtime").collection("betaNews");
+            const betaCollection = client.db("runtime").collection("betaNews");
             // perform actions on the collection object
-            newsCollection.updateOne({ id: newsId },
+            betaCollection.updateOne({ id: newsId },
                 { $set: { ...data } },
                 { upsert: true }).then((result) => {
                     resolve(result);
@@ -45,8 +45,8 @@ const getBetaDataMongo = () => {
     
     return new Promise(function (resolve, reject) {
       getConnection().then((client) => {
-        const newsCollection = client.db("runtime").collection("betaNews");
-          newsCollection.find({}).toArray((err, res) => {
+        const betaCollection = client.db("runtime").collection("betaNews");
+          betaCollection.find({}).toArray((err, res) => {
             if (err) reject(err);
             resolve(res);
           })
@@ -56,26 +56,19 @@ const getBetaDataMongo = () => {
     });
 };
 
-const addNewBeta = (newsId) => {
-    console.log('create a new beta news' + newsId);
-    return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
-            const newsCollection = client.db("runtime").collection("userBeta");
-            // perform actions on the collection object
-            newsCollection.insertOne({
-              createdDate: '',
-              title: '',
-              content: '',
-              hyperlinks: [],
-              portfolio: '',
-              portfolioDescription: '',
-              closeable: false,
-              key: '',
-            })
-        }).catch((err) => {
-            reject(err);
-        });
+const addNewBeta = (data) => {
+  console.log('create a new beta news');
+  return new Promise(function (resolve, reject) {
+    getConnection().then((client) => {
+      const betaCollection = client.db("runtime").collection("betaNews");
+      // perform actions on the collection object
+      betaCollection.insertOne(data).then(res => {
+        resolve(res);
+      })
+    }).catch((err) => {
+      reject(err);
     });
+  });
 }
 
 module.exports = {

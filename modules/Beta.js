@@ -5,6 +5,12 @@ const getNewsData = async (req, res) => {
   res.end(JSON.stringify(snapshot));
 }
 
+const addNewsBeta = async (req, res) => {
+  await BetaMongo.addNewBeta(req.body);
+  res.end('Success');
+}
+
 module.exports = {
   getNewsData,
+  addNewsBeta
 }
