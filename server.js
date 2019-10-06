@@ -36,7 +36,6 @@ start = async () => {
     Chefs.init(esClient);
     Lessons.init(esClient);
     Classes.init(esClient, Lessons);
-    Beta.init(esClient);
 
     const allowedOrigins = ['http://localhost:3000', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
@@ -100,7 +99,7 @@ start = async () => {
     app.get('/user/:email', Admin.adminGetUser);
     app.post('/user/:email', Admin.adminUpdateUser);
 
-    app.get('/beta', Beta.getBetaInfo);
+    app.get('/beta', Beta.getNewsData);
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
