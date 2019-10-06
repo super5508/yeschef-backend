@@ -10,7 +10,13 @@ const addNewsBeta = async (req, res) => {
   res.end('Success');
 }
 
+const updateData = async (req, res) => {
+  await BetaMongo.updateData(req.body);
+  res.end('success');
+}
+
 module.exports = {
   getNewsData,
-  addNewsBeta
+  addNewsBeta,
+  updateData
 }

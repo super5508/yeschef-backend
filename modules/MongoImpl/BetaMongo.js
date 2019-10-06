@@ -54,7 +54,23 @@ const addNewBeta = (data) => {
   });
 }
 
+const updateData = (data) => {
+  console.log('update a beta news');
+  return new Promise(function (resolve, reject) {
+    getConnection().then((client) => {
+      const betaCollection = client.db("runtime").collection("betaNews");
+      // perform actions on the collection object
+      betaCollection.insertOne(data).then(res => {
+        resolve(res);
+      })
+    }).catch((err) => {
+      reject(err);
+    });
+  });
+}
+
 module.exports = {
   getBetaDataMongo,
-  addNewBeta
+  addNewBeta,
+  updateData
 }

@@ -101,6 +101,7 @@ start = async () => {
 
     app.get('/beta', Beta.getNewsData);
     app.post('/addbeta', Beta.addNewsBeta);
+    app.post('/updateData', Beta.updateData)
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
