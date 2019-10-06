@@ -23,23 +23,6 @@ const getConnection = () => {
     });
 };
 
-const updateBetaDataMongo = (newsId, data) => {
-    return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
-            const betaCollection = client.db("runtime").collection("betaNews");
-            // perform actions on the collection object
-            betaCollection.updateOne({ id: newsId },
-                { $set: { ...data } },
-                { upsert: true }).then((result) => {
-                    resolve(result);
-                }).catch((err) => {
-                    reject(err);
-                });
-
-        });
-    });
-};
-
 const getBetaDataMongo = () => {
     console.log('get beta news list');
     
@@ -72,7 +55,6 @@ const addNewBeta = (data) => {
 }
 
 module.exports = {
-  updateBetaDataMongo,
   getBetaDataMongo,
   addNewBeta
 }
