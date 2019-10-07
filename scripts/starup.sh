@@ -1,7 +1,6 @@
 #!/bin/bash
 LOG_FILE=/var/log/startup.log
 echo "run startup script" >> "$LOG_FILE"
-export CONFIG_ENV="production"
 cd /opt/yeschef-be
 echo "reset yeschef-be folder" >> "$LOG_FILE"
 sudo git fetch origin
@@ -12,10 +11,11 @@ sudo npm install
 
 echo "check the pm2 process status" >> "$LOG_FILE"
 isProcessExists=`sudo pm2 list | grep yc-be | wc -l`
+echo "isProcessExists=$isProcessExists"
 if [ -z $isProcessExists ]; then
     echo "update the pm2" >> "$LOG_FILE"
-    sudo pm2 update
+    sudo CONFIG_ENV=production pm2 update
 else
     echo "create the pm2" >> "$LOG_FILE"
-    sudo pm2 start /opt/yeschef-be/server.js --watch --name yc-be --max-memory-restart 500M -i max
+    sudo CONFIG_ENV=production pm2 start /opt/yeschef-be/server.js --watch --name yc-be --max-memory-restart 500M -i max
 fi
