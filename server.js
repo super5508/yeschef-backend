@@ -9,9 +9,21 @@ const Classes = require('./modules/Classes')
 const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
+const Beta = require('./modules/Beta');
 const UserWatching = require('./modules/UserWatching');
 
 start = async () => {
+    const esClient = new Client({
+        cloud: {
+            id: 'yeschef-dev:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyRiYzAxNjdhNTU3NTM0NTY5OGRiOGExYTg3ZWI0ZWI0YyQ4NTAzZDViNDU2Zjg0MDc1OGQ1NWY5MGVkOGZmYTVjMQ=='
+        },
+        auth: {
+            // apiKey: '8s1dqJAIS7KnUHdb5tfamg'
+            username: "yc-be-dev",
+            password: "LnWJpBE4sCrYrQX"
+        }
+    });
+
     // Default config options
     // const defaultOptions = {
     //     baseURL: 'https://c172f7cb5cb64c51b151f14a9794887f.us-east-1.aws.found.io:9243',
@@ -89,6 +101,10 @@ start = async () => {
     //-------------------------------------------------admin-----------------------
     app.get('/user/:email', Admin.adminGetUser);
     app.post('/user/:email', Admin.adminUpdateUser);
+
+    app.get('/beta', Beta.getNewsData);
+    app.post('/addbeta', Beta.addNewsBeta);
+    app.post('/updateData', Beta.updateData)
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }

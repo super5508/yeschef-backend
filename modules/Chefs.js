@@ -1,8 +1,8 @@
-const { esClient } = require('./ESImpl/esClientWrapper');
+let esClient;
 
-// const init = (_esClient) => {
-//     esClient = _esClient;
-// }
+const init = (_esClient) => {
+    esClient = _esClient;
+}
 
 const getInfo = async (req, res) => {
     res.set("Cache-Control", "max-age=86400");
@@ -25,6 +25,6 @@ const getInfo = async (req, res) => {
 };
 
 module.exports = {
-    // init,
+    init,
     getInfo
 }

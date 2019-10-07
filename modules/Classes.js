@@ -1,31 +1,13 @@
-const { esClient } = require('./ESImpl/esClientWrapper');
-const LessonsModule = require('./Lessons');
+let esClient;
+let LessonsModule;
 
-// exports.init = (_esClient, _lessonsModule) => {
-//     esClient = _esClient;
-//     LessonsModule = _lessonsModule;
-// }
-
-exports.saveClass = async (classObj) => {
-    let response = false;
-    try {
-        await esClient.update({
-            index: "classes",
-            id: classObj.id,
-            doc_as_upsert: true,
-            body: { doc: classObj }
-        })
-        response = true;
-    } catch (e) {
-        const errMsg = "error in saving class";
-        console.warn(errMsg);
-        console.warn(e);
-    }
-    return response;
+exports.init = (_esClient, _lessonsModule) => {
+    esClient = _esClient;
+    LessonsModule = _lessonsModule;
 }
 
 exports.getClassList = async (req, res) => {
-    res.set("Cache-Control", "max-age=600");
+    res.set("Cache-Control", "max-age=86400");
     let response;
     try {
         const classesResponse = await esClient.search({
@@ -74,7 +56,7 @@ exports.getClassList = async (req, res) => {
 }
 
 exports.getInfo = async (req, res) => {
-    res.set("Cache-Control", "max-age=600");
+    res.set("Cache-Control", "max-age=86400");
     let response;
     try {
         const getClassResponse = await esClient.get({

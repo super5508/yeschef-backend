@@ -1,18 +1,13 @@
-const Classes = require('../Classes');
-const Lessons = require('../Lessons');
 const MongoClient = require('mongodb').MongoClient;
 let config = require('../../config');
 const notionKeyToDbKey = require('../../Notion2DB').notionKeyToDbKey;
-
 config = config[process.env.CONFIG_ENV || "development"];
-
-
+console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 const getConnection = () => {
     return new Promise(function (resolve, reject) {
         if (!client.isConnected()) {
-            console.log("create mongo connection");
             client.connect(err => {
                 if (err) {
                     reject(err);
@@ -32,20 +27,21 @@ const replaceDocsMongo = async (db, collectionName, docIdKey, dataArray) => {
         const client = await getConnection();
         const collection = client.db(db).collection(collectionName);
         const replacePromisesArr = [];
+        docIdKey = notionKeyToDbKey(docIdKey);
 
         dataArray.forEach(dataRow => {
             //convert dataRow keys
             const dbDataRow = {};
             Object.keys(dataRow).forEach(notionKey => {
                 if (notionKey == "undefined") return;
-                dbDataRow[notionKey] = dataRow[notionKey];
+                dbDataRow[notionKeyToDbKey(notionKey)] = dataRow[notionKey];
             });
 
             // perform actions on the collection object
             const query = {};
             query[docIdKey] = dbDataRow[docIdKey];
             collection.replaceOne(query,
-                { ...dbDataRow },
+                { $set: { ...dbDataRow } },
                 { upsert: true });
         })
 
@@ -57,6 +53,7 @@ const replaceDocsMongo = async (db, collectionName, docIdKey, dataArray) => {
         });
     });
 };
+
 
 const generateDocs = async () => {
     return new Promise(function (resolve, reject) {
@@ -185,6 +182,7 @@ const generateDocs = async () => {
     });
 }
 
+
 const getDocMongo = (userId) => {
     return new Promise(function (resolve, reject) {
         getConnection().then((client) => {
@@ -200,6 +198,5 @@ const getDocMongo = (userId) => {
 }
 
 module.exports = {
-    replaceDocsMongo,
-    generateDocs
+    replaceDocsMongo
 }
