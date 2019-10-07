@@ -9,6 +9,7 @@ const Classes = require('./modules/Classes')
 const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
+const Feedback = require('./modules/Feedbacks');
 const Beta = require('./modules/Beta');
 const UserWatching = require('./modules/UserWatching');
 
@@ -33,9 +34,10 @@ start = async () => {
     // };
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
-    //Chefs.init(esClient);
-    //Lessons.init(esClient);
-    //Classes.init(esClient, Lessons);
+    Chefs.init(esClient);
+    Lessons.init(esClient);
+    Classes.init(esClient, Lessons);
+    Feedback.init(esClient);
 
     const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
@@ -84,6 +86,8 @@ start = async () => {
     app.post('/user', Users.update);
     app.get('/user', Users.getUserData);
 
+    app.post('/feedback',Feedback.addFeedback);
+    app.get('/feedback', Feedback.getFeedback);
     app.get('/history/:user', UserWatching.getWatchingData);
     app.post('/history', UserWatching.updateWatchingData);
 
