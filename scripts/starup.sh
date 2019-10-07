@@ -1,11 +1,11 @@
 #!/bin/bash
 LOG_FILE=/var/log/startup.log
 echo "run startup script" >> "$LOG_FILE"
-export CONFIG_ENV = "production"
+export CONFIG_ENV="production"
 cd /opt/yeschef-be
 echo "reset yeschef-be folder" >> "$LOG_FILE"
 sudo git fetch origin
-sudo git reset--hard origin / master
+sudo git reset --hard origin/master
 echo "update to recent code" >> "$LOG_FILE"
 sudo git pull
 sudo npm install
