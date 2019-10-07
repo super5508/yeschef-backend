@@ -1,0 +1,406 @@
+{
+  "IamFleetRole": "arn:aws:iam::400513244538:role/aws-ec2-spot-fleet-tagging-role",
+  "AllocationStrategy": "capacityOptimized",
+  "TargetCapacity": 1,
+  "SpotPrice": "0.133",
+  "ValidFrom": "2019-10-07T07:39:37Z",
+  "ValidUntil": "2020-10-07T07:39:37Z",
+  "TerminateInstancesWithExpiration": true,
+  "LaunchSpecifications": [
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "c3.large",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.105",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t3a.medium",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0376",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t3.medium",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0416",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t2.medium",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0464",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t3a.large",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0752",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t3.large",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0835",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "c4.large",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.1",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "m3.large",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.133",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t3a.small",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0188",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "t3.small",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.0209",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ImageId": "ami-02a63a70544c04a6a",
+      "InstanceType": "a1.large",
+      "SubnetId": "subnet-f91027d7, subnet-26997b28, subnet-e71520bb, subnet-d2f40c9f, subnet-e08fa687, subnet-f2463acc",
+      "KeyName": "yc-nv",
+      "SpotPrice": "0.051",
+      "BlockDeviceMappings": [
+        {
+          "DeviceName": "/dev/sda1",
+          "Ebs": {
+            "DeleteOnTermination": false,
+            "VolumeType": "gp2",
+            "VolumeSize": 15,
+            "SnapshotId": "snap-07ef227dc7462af67"
+          }
+        }
+      ],
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0f2b9203d4c3b8919"
+        }
+      ],
+      "UserData": "IyEvYmluL2Jhc2gKR0lUX0RJUj15ZXNjaGVmLWJlCnN1ZG8gbWtkaXIgL29wdC8KY2QgL29wdAppZiBbICEgLWQgIi9vcHQvJEdJVF9ESVIiIF07IHRoZW4KCXN1ZG8gZ2l0IGNsb25lIGh0dHBzOi8veWMtdGFsOmIxZGRhZDYwZTM1NzllNjc3MWUwYjMyNTIyNTg5ZGIyNDAyNmIyN2FAZ2l0aHViLmNvbS95ZXNjaGVmbWUveWVzY2hlZi1iZS5naXQKZmkKY2QgIi9vcHQvJEdJVF9ESVIiCi4vc2NyaXB0cy9zdGFydXAuc2gKZWNobyAiQHJlYm9vdCAvb3B0LyRHSVRfRElSL3NjcmlwdHMvc3RhcnR1cC5zaCIgPj4gL2V0Yy9jb25maWcvY3JvbnRhYg==",
+      "TagSpecifications": [
+        {
+          "ResourceType": "instance",
+          "Tags": [
+            {
+              "Key": "Name",
+              "Value": "yc-be"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "maintain",
+  "LoadBalancersConfig": {
+    "TargetGroupsConfig": {
+      "TargetGroups": [
+        {
+          "Arn": "arn:aws:elasticloadbalancing:us-east-1:400513244538:targetgroup/yc-be/732e66b67fe56078"
+        }
+      ]
+    }
+  }
+}
