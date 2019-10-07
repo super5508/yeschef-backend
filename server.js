@@ -10,6 +10,7 @@ const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
 const Beta = require('./modules/Beta');
+const UserWatching = require('./modules/UserWatching');
 
 start = async () => {
     const esClient = new Client({
@@ -82,6 +83,9 @@ start = async () => {
 
     app.post('/user', Users.update);
     app.get('/user', Users.getUserData);
+
+    app.get('/history/:user', UserWatching.getWatchingData);
+    app.post('/history', UserWatching.updateWatchingData);
 
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
