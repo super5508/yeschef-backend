@@ -24,7 +24,7 @@ start = async () => {
     //Lessons.init(esClient);
     //Classes.init(esClient, Lessons);
 
-    const allowedOrigins = ['http://localhost:3000', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
+    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
     // Automatically allow cross-origin requests
     app.use(cors({
