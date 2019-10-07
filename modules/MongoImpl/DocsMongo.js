@@ -1,5 +1,5 @@
 const Classes = require('../Classes');
-const Lessons = require('../Lessons');
+`const Lessons = require('../Lessons');
 const MongoClient = require('mongodb').MongoClient;
 let config = require('../../config');
 const notionKeyToDbKey = require('../../Notion2DB').notionKeyToDbKey;
@@ -92,7 +92,7 @@ const generateDocs = async () => {
                         twitter: chef.twUrl
                     }
                 });
-                console.log(`saved class: ${classItr.classId}`);
+                console.log(`saved class: ${ classItr.classId } `);
 
 
                 if (classItr.lessonsId && classItr.lessonsId.length) {
@@ -174,7 +174,7 @@ const generateDocs = async () => {
                         }
 
                         Lessons.saveLesson(lessonDoc);
-                        console.log(`saved lesson: ${lessonDoc.id}`);
+                        console.log(`saved lesson: ${ lessonDoc.id } `);
                     })
                 }
             })
