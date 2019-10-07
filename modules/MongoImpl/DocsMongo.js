@@ -64,7 +64,7 @@ const generateDocs = async () => {
         getConnection().then(async (client) => {
             const classesCollection = client.db("runtime").collection("classes");
             const lessonsCollection = client.db("runtime").collection("lessons");
-            const dishesCollection = client.db("runtime").collection("dishes");
+            const contentBlocksCollection = client.db("runtime").collection("contentBlocks");
             const suppliesCollection = client.db("runtime").collection("supplies");
             const shorthandCollection = client.db("runtime").collection("shorthand");
             // perform actions on the collection object
@@ -113,19 +113,19 @@ const generateDocs = async () => {
                             title: lesson.title
                         };
 
-                        if (lesson.dishId && typeof lesson.dishId === "string") {
-                            const dishesList = {};
+                        if (lesson.contentBlockId && typeof lesson.contentBlocksId === "string") {
+                            const contentBlocksList = {};
 
                             //------------------------------- supplies -------------------------------
-                            suppliesCollection.find({ "dishMainId": lesson.dishId }).forEach(async (suppliesItr) => {
-                                const section = suppliesItr.dishSub || "Main Dish";
+                            suppliesCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (suppliesItr) => {
+                                const section = suppliesItr.contentBlockSub || "Main Dish";
                                 let order = 0;
-                                if (suppliesItr.dishSubId) {
-                                    if (!dishesList[suppliesItr.dishSubId]) {
-                                        const subDish = await dishesCollection.findOne({ dishId: suppliesItr.dishSubId });
-                                        dishesList[suppliesItr.dishSubId] = subDish.order;
+                                if (suppliesItr.contentBlockSubId) {
+                                    if (!contentBlocksList[suppliesItr.contentBlockSubId]) {
+                                        const subContentBlock = await contentBlocksCollection.findOne({ contentBlockId: suppliesItr.contentBlockSubId });
+                                        contentBlocksList[suppliesItr.contentBlockSubId] = subContentBlock.order;
                                     }
-                                    order = dishesList[suppliesItr.dishSubId];
+                                    order = contentBlocksList[suppliesItr.contentBlockSubId];
                                 }
                                 //if the sub dish doesn't exists, create the list for gear / ingredients
                                 lessonDoc.gear[order] = lessonDoc.gear[order] || { sectionName: section, items: {} };
@@ -146,7 +146,7 @@ const generateDocs = async () => {
 
                             // ------------------------------------ supplies End
                             // ------------------------------------ shorthand
-                            shorthandCollection.find({ "dishMainId": lesson.dishId }).forEach(async (shorthand) => {
+                            shorthandCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (shorthand) => {
                                 const section = shorthand.sectionTitle || "Main Dish";
                                 const order = shorthand.sectionNum || 0;
 
@@ -165,15 +165,15 @@ const generateDocs = async () => {
                             // ------------------------------------ shorthand End
 
 
-                            const dish = await dishesCollection.findOne({ dishId: lesson.dishId });
-                            lessonDoc.cuisine.concat(dish.cuisine);
-                            lessonDoc.description += dish.description;
-                            lessonDoc.dietary.concat(dish.dietary);
-                            lessonDoc.skills.concat(dish.skills);
-                            lessonDoc.duration = parseInt(dish.duration);
-                            lessonDoc.videoUrl = dish.videoUrl;
-                            lessonDoc.times.total = parseInt(dish.totalTime);
-                            lessonDoc.times.handsOn = parseInt(dish.handsOnTime);
+                            const contentBlock = await contentBlocksCollection.findOne({ contentBlockId: lesson.contentBlockId });
+                            lessonDoc.cuisine.concat(contentBlock.cuisine);
+                            lessonDoc.description += contentBlock.description;
+                            lessonDoc.dietary.concat(contentBlock.dietary);
+                            lessonDoc.skills.concat(contentBlock.skills);
+                            lessonDoc.duration = parseInt(contentBlock.duration);
+                            lessonDoc.videoUrl = contentBlock.videoUrl;
+                            lessonDoc.times.total = parseInt(contentBlock.totalTime);
+                            lessonDoc.times.handsOn = parseInt(contentBlock.handsOnTime);
                         }
 
                         Lessons.saveLesson(lessonDoc);
