@@ -11,7 +11,6 @@ const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
 const Beta = require('./modules/Beta');
 
-const { Client } = require('@elastic/elasticsearch')
 start = async () => {
     const esClient = new Client({
         cloud: {
@@ -33,11 +32,11 @@ start = async () => {
     // };
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
-    Chefs.init(esClient);
-    Lessons.init(esClient);
-    Classes.init(esClient, Lessons);
+    //Chefs.init(esClient);
+    //Lessons.init(esClient);
+    //Classes.init(esClient, Lessons);
 
-    const allowedOrigins = ['http://localhost:3000', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
+    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
     // Automatically allow cross-origin requests
     app.use(cors({
@@ -58,8 +57,7 @@ start = async () => {
 
     app.options('*', cors());
 
-    app.use(bodyParser.json());
-
+    app.use(bodyParser.json({ limit: '50mb' }));
     app.use(function (req, res, next) {
         //res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
@@ -94,6 +92,7 @@ start = async () => {
     app.get('/class/:classId/lesson/:lessonIndex', Lessons.getInfoByClassAndIndex);
 
     app.post('/docs/', Admin.adminDocsUpdate);
+    app.post('/docs/generate/', Admin.adminDocsGenerate);
 
     //-------------------------------------------------admin-----------------------
     app.get('/user/:email', Admin.adminGetUser);
