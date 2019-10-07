@@ -1,9 +1,12 @@
 const Classes = require('../Classes');
+const Lessons = require('../Lessons');
 const MongoClient = require('mongodb').MongoClient;
 let config = require('../../config');
 const notionKeyToDbKey = require('../../Notion2DB').notionKeyToDbKey;
+
 config = config[process.env.CONFIG_ENV || "development"];
-console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
+
+
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
 const getConnection = () => {
@@ -58,11 +61,12 @@ const replaceDocsMongo = async (db, collectionName, docIdKey, dataArray) => {
 const generateDocs = async () => {
     return new Promise(function (resolve, reject) {
         const classes = {};
-        getConnection().then((client) => {
+        getConnection().then(async (client) => {
             const classesCollection = client.db("runtime").collection("classes");
             const lessonsCollection = client.db("runtime").collection("lessons");
             const dishesCollection = client.db("runtime").collection("dishes");
-            const dishesCollection = client.db("runtime").collection("dishes");
+            const suppliesCollection = client.db("runtime").collection("supplies");
+            const shorthandCollection = client.db("runtime").collection("shorthand");
             // perform actions on the collection object
             classesCollection.find().forEach(async (classItr) => {
                 const chefId = classItr.chefId;
@@ -88,38 +92,89 @@ const generateDocs = async () => {
                         twitter: chef.twUrl
                     }
                 });
+                console.log(`saved class: ${classItr.classId}`);
+
 
                 if (classItr.lessonsId && classItr.lessonsId.length) {
                     classItr.lessonsId.forEach(async lessonId => {
                         const lesson = await lessonsCollection.findOne({ lessonId });
-                        const supplies = await lessonsCollection.findOne({ lessonId });
                         const lessonDoc = {
+                            id: lessonId,
                             thumbnail: lesson.thumbnail,
                             cuisine: [],
                             description: "",
                             dietary: [],
                             duration: 0, //TBD - need to get the duration of the video 
-                            gear: {}, //TBD - split the list across the sub dishes and handle the main dish list
-                            ingredients: {}, //TBD - split the list across the sub dishes and handle the main dish list
-                            shorthand: {}, //TBD - split the list across the sub dishes and handle the main dish list
+                            gear: {},
+                            ingredients: {},
+                            shorthand: {},
                             skills: [],
-                            times: {
-                                handsOn: 0, //TBD
-                                total: 0 //TBD
-                            }
+                            times: {},
+                            title: lesson.title
                         };
 
-                        if (typeof lesson.dishId === "string") {
-                            lesson.dishId = lesson.dishId ? [lesson.dishId] : [];
-                        }
+                        if (lesson.dishId && typeof lesson.dishId === "string") {
+                            const dishesList = {};
 
-                        lesson.dishId.forEach(async dishId => {
-                            const dish = await dishesCollection.findOne({ dishId });
+                            //------------------------------- supplies -------------------------------
+                            suppliesCollection.find({ "dishMainId": lesson.dishId }).forEach(async (suppliesItr) => {
+                                const section = suppliesItr.dishSub || "Main Dish";
+                                let order = 0;
+                                if (suppliesItr.dishSubId) {
+                                    if (!dishesList[suppliesItr.dishSubId]) {
+                                        const subDish = await dishesCollection.findOne({ dishId: suppliesItr.dishSubId });
+                                        dishesList[suppliesItr.dishSubId] = subDish.order;
+                                    }
+                                    order = dishesList[suppliesItr.dishSubId];
+                                }
+                                //if the sub dish doesn't exists, create the list for gear / ingredients
+                                lessonDoc.gear[order] = lessonDoc.gear[order] || { sectionName: section, items: {} };
+                                lessonDoc.ingredients[order] = lessonDoc.ingredients[order] || { sectionName: section, items: {} };
+
+                                const supplyObj = {
+                                    name: suppliesItr.name,
+                                    quantity: suppliesItr.quantity,
+                                    unit: suppliesItr.unit
+                                }
+
+                                if (suppliesItr.type === "Ingredient") {
+                                    lessonDoc.ingredients[order].items[suppliesItr.supplyId] = supplyObj;
+                                } else {
+                                    lessonDoc.gear[order].items[suppliesItr.supplyId] = supplyObj;
+                                }
+                            });
+
+                            // ------------------------------------ supplies End
+                            // ------------------------------------ shorthand
+                            shorthandCollection.find({ "dishMainId": lesson.dishId }).forEach(async (shorthand) => {
+                                const section = shorthand.sectionTitle || "Main Dish";
+                                const order = shorthand.sectionNum || 0;
+
+                                //if the sub dish doesn't exists, create the list for gear / ingredients
+                                lessonDoc.shorthand[order] = lessonDoc.shorthand[order] || { sectionName: section, items: [] };
+
+                                const shorthandObj = {
+                                    step: shorthand.name,
+                                    order: shorthand.stepNum,
+                                    details: shorthand.details
+                                }
+
+                                lessonDoc.shorthand[order].items[shorthand.stepNum] = shorthandObj;
+
+                            });
+                            // ------------------------------------ shorthand End
+
+                            const dish = await dishesCollection.findOne({ dishId: lesson.dishId });
                             lessonDoc.cuisine.concat(dish.cuisine);
                             lessonDoc.description += dish.description;
                             lessonDoc.dietary.concat(dish.dietary);
                             lessonDoc.skills.concat(dish.skills);
-                        })
+                            lessonDoc.times.total = parseInt(dish.totalTime);
+                            lessonDoc.times.handsOn = parseInt(dish.handsOnTime);
+                        }
+
+                        Lessons.saveLesson(lessonDoc);
+                        console.log(`saved lesson: ${lessonDoc.id}`);
                     })
                 }
             })

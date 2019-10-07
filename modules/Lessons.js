@@ -30,6 +30,25 @@ exports.getLiteLessonsByIdList = async (lessonIdsList) => {
     return response;
 }
 
+exports.saveLesson = async (lessonObj) => {
+    let response = false;
+    try {
+        await esClient.update({
+            index: "lessons",
+            id: lessonObj.id,
+            doc_as_upsert: true,
+            body: { doc: lessonObj }
+        })
+        response = true;
+    } catch (e) {
+        const errMsg = "error in saving lesson";
+        console.warn(errMsg);
+        console.warn(e);
+    }
+    return response;
+}
+
+
 exports.getInfoByClassAndIndex = async (req, res) => {
     res.set("Cache-Control", "max-age=86400");
     try {
