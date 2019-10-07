@@ -11,7 +11,7 @@ sudo git pull
 sudo npm install
 
 echo "check the pm2 process status" >> "$LOG_FILE"
-isProcessExists = $(sudo pm2 list | grep yc-be | wc -l)
+isProcessExists=$(sudo pm2 list | grep yc-be | wc -l)
 if [$isProcessExists = 0]; then
     echo "update the pm2" >> "$LOG_FILE"
     sudo pm2 update
