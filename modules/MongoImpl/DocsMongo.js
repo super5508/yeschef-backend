@@ -104,7 +104,7 @@ const generateDocs = async () => {
                             cuisine: [],
                             description: "",
                             dietary: [],
-                            duration: 0, //TBD - need to get the duration of the video 
+                            duration: 1000,
                             gear: {},
                             ingredients: {},
                             shorthand: {},
@@ -164,11 +164,14 @@ const generateDocs = async () => {
                             });
                             // ------------------------------------ shorthand End
 
+
                             const dish = await dishesCollection.findOne({ dishId: lesson.dishId });
                             lessonDoc.cuisine.concat(dish.cuisine);
                             lessonDoc.description += dish.description;
                             lessonDoc.dietary.concat(dish.dietary);
                             lessonDoc.skills.concat(dish.skills);
+                            lessonDoc.duration = parseInt(dish.duration);
+                            lessonDoc.videoUrl = dish.videoUrl;
                             lessonDoc.times.total = parseInt(dish.totalTime);
                             lessonDoc.times.handsOn = parseInt(dish.handsOnTime);
                         }
