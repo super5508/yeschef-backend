@@ -10,8 +10,9 @@ const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
 const Feedback = require('./modules/Feedbacks');
+const Beta = require('./modules/Beta');
+const UserWatching = require('./modules/UserWatching');
 
-const { Client } = require('@elastic/elasticsearch')
 start = async () => {
     const esClient = new Client({
         cloud: {
@@ -38,7 +39,7 @@ start = async () => {
     Classes.init(esClient, Lessons);
     Feedback.init(esClient);
 
-    const allowedOrigins = ['http://localhost:3000', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
+    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
     // Automatically allow cross-origin requests
     app.use(cors({
@@ -59,8 +60,7 @@ start = async () => {
 
     app.options('*', cors());
 
-    app.use(bodyParser.json());
-
+    app.use(bodyParser.json({ limit: '50mb' }));
     app.use(function (req, res, next) {
         //res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
@@ -88,6 +88,8 @@ start = async () => {
 
     app.post('/feedback',Feedback.addFeedback);
     app.get('/feedback', Feedback.getFeedback);
+    app.get('/history/:user', UserWatching.getWatchingData);
+    app.post('/history', UserWatching.updateWatchingData);
 
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
@@ -98,10 +100,15 @@ start = async () => {
     app.get('/class/:classId/lesson/:lessonIndex', Lessons.getInfoByClassAndIndex);
 
     app.post('/docs/', Admin.adminDocsUpdate);
+    app.post('/docs/generate/', Admin.adminDocsGenerate);
 
     //-------------------------------------------------admin-----------------------
     app.get('/user/:email', Admin.adminGetUser);
     app.post('/user/:email', Admin.adminUpdateUser);
+
+    app.get('/beta', Beta.getNewsData);
+    app.post('/addbeta', Beta.addNewsBeta);
+    app.post('/updateData', Beta.updateData)
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
