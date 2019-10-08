@@ -68,9 +68,15 @@ const generateDocs = async () => {
             const suppliesCollection = client.db("runtime").collection("supplies");
             const shorthandCollection = client.db("runtime").collection("shorthand");
             // perform actions on the collection object
-            classesCollection.find().forEach(async (classItr) => {
+            await classesCollection.find().forEach(async (classItr) => {
                 const chefId = classItr.chefId;
-                const chef = await client.db("runtime").collection("chefs").findOne({ chefId });
+                let chef = await client.db("runtime").collection("chefs").findOne({ chefId });
+                chef = chef || {
+                    bio: "",
+                    fbUrl: "",
+                    igUrl: "",
+                    twUrl: ""
+                };
 
                 Classes.saveClass({
                     id: classItr.classId,
@@ -113,11 +119,11 @@ const generateDocs = async () => {
                             title: lesson.title
                         };
 
-                        if (lesson.contentBlockId && typeof lesson.contentBlocksId === "string") {
+                        if (lesson.contentBlockId && typeof lesson.contentBlockId === "string") {
                             const contentBlocksList = {};
 
                             //------------------------------- supplies -------------------------------
-                            suppliesCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (suppliesItr) => {
+                            await suppliesCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (suppliesItr) => {
                                 const section = suppliesItr.contentBlockSub || "Main Dish";
                                 let order = 0;
                                 if (suppliesItr.contentBlockSubId) {
@@ -146,7 +152,7 @@ const generateDocs = async () => {
 
                             // ------------------------------------ supplies End
                             // ------------------------------------ shorthand
-                            shorthandCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (shorthand) => {
+                            await shorthandCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (shorthand) => {
                                 const section = shorthand.sectionTitle || "Main Dish";
                                 const order = shorthand.sectionNum || 0;
 
@@ -176,11 +182,15 @@ const generateDocs = async () => {
                             lessonDoc.times.handsOn = parseInt(contentBlock.handsOnTime);
                         }
 
-                        Lessons.saveLesson(lessonDoc);
+                        const saveLessonResponse = await Lessons.saveLesson(lessonDoc);
+                        if (saveLessonResponse) {
+                            reject(saveLessonResponse);
+                        }
                         console.log(`saved lesson: ${lessonDoc.id} `);
                     })
                 }
             })
+            resolve('done');
         });
     });
 }

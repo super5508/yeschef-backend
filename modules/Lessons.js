@@ -31,26 +31,26 @@ exports.getLiteLessonsByIdList = async (lessonIdsList) => {
 }
 
 exports.saveLesson = async (lessonObj) => {
-    let response = false;
+    let response = "";
     try {
         await esClient.update({
             index: "lessons",
             id: lessonObj.id,
             doc_as_upsert: true,
             body: { doc: lessonObj }
-        })
-        response = true;
+        });
     } catch (e) {
         const errMsg = "error in saving lesson";
         console.warn(errMsg);
         console.warn(e);
+        response = errMsg;
     }
     return response;
 }
 
 
 exports.getInfoByClassAndIndex = async (req, res) => {
-    res.set("Cache-Control", "max-age=86400");
+    res.set("Cache-Control", "max-age=600");
     try {
         //get class Data
         const getClassResponse = await esClient.get({
@@ -80,7 +80,7 @@ exports.getInfoByClassAndIndex = async (req, res) => {
 
 
 exports.getInfo = async (req, res) => {
-    res.set("Cache-Control", "max-age=86400");
+    res.set("Cache-Control", "max-age=600");
     let response;
     try {
         const getClassResponse = await esClient.get({

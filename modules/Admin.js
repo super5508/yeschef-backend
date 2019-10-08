@@ -37,10 +37,11 @@ const adminGetUser = async (req, res) => {
 const adminDocsGenerate = async (req, res) => {
     console.log('check if user is admin');
     if (await isAdmin(req)) {
-        await docsMongo.generateDocs();
-        res.end("");
-    } else {
-        res.status(401).end();
+        docsMongo.generateDocs().then(result => {
+            res.end("");
+        }).catch((err) => {
+            res.status(401).end(err);
+        });
     }
 }
 
