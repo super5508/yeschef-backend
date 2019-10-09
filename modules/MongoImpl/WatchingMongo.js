@@ -84,6 +84,7 @@ const addNewWatching = (userId) => {
                 lessonId: -1,
                 progress: 0,
             })
+            resolve('created successfully!');
         }).catch((err) => {
             reject(err);
         });

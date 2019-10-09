@@ -10,10 +10,14 @@ const updateWatchingData = async (req,res) => {
 const getWatchingData = async (req, res) => {
   const id = req.params.user;
 
-  const snapshot = await WatchingMongo.getWatchingDataMongo(id);
+  let snapshot = await WatchingMongo.getWatchingDataMongo(id);
   if (snapshot === null) {
-    snapshot = await WatchingMongo.addNewWatching(id);
-    res.end('created');
+    await WatchingMongo.addNewWatching(id);
+    res.end(JSON.stringify({
+      classId: "c01",
+      lessonId: 1,
+      name: "CHEF EDWARD LEE"
+    }))
   }
   res.end(JSON.stringify(snapshot));
 }
