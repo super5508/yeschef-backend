@@ -9,8 +9,12 @@ const Classes = require('./modules/Classes')
 const Lessons = require('./modules/Lessons')
 const Users = require('./modules/Users');
 const Admin = require('./modules/Admin');
+const Feedback = require('./modules/Feedbacks');
+const Beta = require('./modules/Beta');
+const UserWatching = require('./modules/UserWatching');
 
 start = async () => {
+
     // Default config options
     // const defaultOptions = {
     //     baseURL: 'https://c172f7cb5cb64c51b151f14a9794887f.us-east-1.aws.found.io:9243',
@@ -20,9 +24,6 @@ start = async () => {
     // };
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
-    //Chefs.init(esClient);
-    //Lessons.init(esClient);
-    //Classes.init(esClient, Lessons);
 
     const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com'];
 
@@ -71,6 +72,11 @@ start = async () => {
     app.post('/user', Users.update);
     app.get('/user', Users.getUserData);
 
+    app.post('/feedback', Feedback.addFeedback);
+    app.get('/feedback', Feedback.getFeedback);
+    app.get('/history/:user', UserWatching.getWatchingData);
+    app.post('/history', UserWatching.updateWatchingData);
+
     app.get('/hc', (req, res) => {
         res.end("I'm Alive!");
     });
@@ -85,6 +91,10 @@ start = async () => {
     //-------------------------------------------------admin-----------------------
     app.get('/user/:email', Admin.adminGetUser);
     app.post('/user/:email', Admin.adminUpdateUser);
+
+    app.get('/beta', Beta.getNewsData);
+    app.post('/addbeta', Beta.addNewsBeta);
+    app.post('/updateData', Beta.updateData)
 
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 }
