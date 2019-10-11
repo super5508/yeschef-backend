@@ -25,17 +25,14 @@ const getConnection = () => {
 
 const updateWatchingDataMongo = (userId, data) => {
     return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
+        getConnection().then(async (client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
+            const chefCollection = client.db("runtime").collection("chefs");
+            const currentChef = await chefCollection.findOne({ classId: data.classId });
+            console.log("====", currentChef, "====");
             // perform actions on the collection object
-            historyCollection.updateOne({ id: userId },
-                { $set: { ...data } },
-                { upsert: true }).then((result) => {
-                    resolve(result);
-                }).catch((err) => {
-                    reject(err);
-                });
-
+            const updatedHistory = await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: currentChef.class } }, { upsert: true })
+            resolve('updated');
         });
     });
 };
@@ -43,56 +40,27 @@ const updateWatchingDataMongo = (userId, data) => {
 const getWatchingDataMongo = (userId) => {
     console.log('get watching history of user ' + userId);
     return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
+        getConnection().then(async (client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
-            // perform actions on the collection object
-            const chefCollection = client.db("runtime").collection("classes");
-            historyCollection.findOne({ id: userId }).then((results) => {
-                if (results !== null) {
-                    chefCollection.findOne({ classId: results.classId }).then(res => {
-                        if (res !== null) {
-                            resolve({
-                                ...results,
-                                name: res.name,
-                            });
-                        } else {
-                            resolve(results);
-                        }
-                    }).catch(err => {
-                        reject(err);
-                    });
-                } else {
-                    resolve(results);
-                }
-            }).catch((err) => {
-                reject(err);
-            });
+            const currentUserHistory = await historyCollection.findOne({ id: userId });
+            if (currentUserHistory) {
+                resolve(currentUserHistory);
+            } else {
+                const insertedUser = await historyCollection.insertOne({
+                    id: userId,
+                    classId: "c00",
+                    lessonId: "s00",
+                    chefName: "THE WORLD'S BEST CHEFS"
+                });
+                resolve(insertedUser.ops[0]);
+            }
         }).catch((err) => {
             reject(err);
         });
     });
 };
 
-const addNewWatching = (userId) => {
-    console.log('create a new watchHistory for user ' + userId);
-    return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
-            const historyCollection = client.db("runtime").collection("userWatching");
-            // perform actions on the collection object
-            historyCollection.insertOne({
-                id: userId,
-                lessonId: -1,
-                progress: 0,
-            })
-            resolve('created successfully!');
-        }).catch((err) => {
-            reject(err);
-        });
-    });
-}
-
 module.exports = {
   updateWatchingDataMongo,
-  getWatchingDataMongo,
-  addNewWatching
+  getWatchingDataMongo
 }
