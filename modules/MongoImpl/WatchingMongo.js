@@ -29,9 +29,8 @@ const updateWatchingDataMongo = (userId, data) => {
             const historyCollection = client.db("runtime").collection("userWatching");
             const chefCollection = client.db("runtime").collection("chefs");
             const currentChef = await chefCollection.findOne({ classId: data.classId });
-            console.log("====", currentChef, "====");
             // perform actions on the collection object
-            const updatedHistory = await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: currentChef.class } }, { upsert: true })
+            await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: currentChef.class } }, { upsert: true })
             resolve('updated');
         });
     });
