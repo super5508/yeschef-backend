@@ -3,7 +3,7 @@ let config = require('../../config');
 config = config[process.env.CONFIG_ENV || "development"];
 console.log("process.env");
 console.log(process.env);
-console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
+console.log("CONFIG_ENV = " + (process.env.CONFIG_ENV || "development"));
 
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
@@ -25,16 +25,16 @@ const getConnection = () => {
 
 const getBetaDataMongo = () => {
   console.log('get beta news list');
-  
+
   return new Promise(function (resolve, reject) {
     getConnection().then((client) => {
       const betaCollection = client.db("runtime").collection("betaNews");
-        betaCollection.find({}).toArray((err, res) => {
-          if (err) reject(err);
-          resolve(res);
-        })
-      }).catch((err) => {
-        reject(err);
+      betaCollection.find({}).toArray((err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      })
+    }).catch((err) => {
+      reject(err);
     });
   });
 };

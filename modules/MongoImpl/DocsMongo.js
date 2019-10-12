@@ -83,7 +83,7 @@ const generateDocs = async () => {
                     about: chef.bio,
                     chefImg: classItr.photo,
                     description: classItr.description,
-                    lessons: classItr.lessonsId,
+                    lessons: classItr.lessonsId.sort ? classItr.lessonsId.sort() : [classItr.lessonId],
                     skills: classItr.techniques,
                     isStaging: classItr.staging,
                     isComingSoon: classItr.comingSoon,
@@ -102,7 +102,10 @@ const generateDocs = async () => {
 
 
                 if (classItr.lessonsId && classItr.lessonsId.length) {
-                    classItr.lessonsId.forEach(async lessonId => {
+                    if (typeof classItr.lessonsId === "string") {
+                        classItr.lessonsId = [classItr.lessonsId];
+                    }
+                    for (const lessonId of classItr.lessonsId) {
                         const lesson = await lessonsCollection.findOne({ lessonId });
                         const lessonDoc = {
                             id: lessonId,
@@ -111,9 +114,8 @@ const generateDocs = async () => {
                             description: "",
                             dietary: [],
                             duration: 1000,
-                            gear: {},
-                            ingredients: {},
-                            shorthand: {},
+                            supplies: [],
+                            shorthand: [],
                             skills: [],
                             times: {},
                             title: lesson.title
@@ -129,24 +131,29 @@ const generateDocs = async () => {
                                 if (suppliesItr.contentBlockSubId) {
                                     if (!contentBlocksList[suppliesItr.contentBlockSubId]) {
                                         const subContentBlock = await contentBlocksCollection.findOne({ contentBlockId: suppliesItr.contentBlockSubId });
-                                        contentBlocksList[suppliesItr.contentBlockSubId] = subContentBlock.order;
+                                        contentBlocksList[suppliesItr.contentBlockSubId] = subContentBlock.order || 0;
                                     }
                                     order = contentBlocksList[suppliesItr.contentBlockSubId];
                                 }
                                 //if the sub dish doesn't exists, create the list for gear / ingredients
-                                lessonDoc.gear[order] = lessonDoc.gear[order] || { sectionName: section, items: {} };
-                                lessonDoc.ingredients[order] = lessonDoc.ingredients[order] || { sectionName: section, items: {} };
+                                lessonDoc.supplies[order] = lessonDoc.supplies[order] || {
+                                    sectionName: section,
+                                    gear: [],
+                                    ingredients: []
+                                }
 
                                 const supplyObj = {
+                                    id: suppliesItr.supplyId,
                                     name: suppliesItr.name,
                                     quantity: suppliesItr.quantity,
-                                    unit: suppliesItr.unit
+                                    unit: suppliesItr.unit,
+                                    details: suppliesItr.details
                                 }
 
                                 if (suppliesItr.type === "Ingredient") {
-                                    lessonDoc.ingredients[order].items[suppliesItr.supplyId] = supplyObj;
+                                    lessonDoc.supplies[order].ingredients.push(supplyObj);
                                 } else {
-                                    lessonDoc.gear[order].items[suppliesItr.supplyId] = supplyObj;
+                                    lessonDoc.supplies[order].gear.push(supplyObj);
                                 }
                             });
 
@@ -176,7 +183,7 @@ const generateDocs = async () => {
                             lessonDoc.description += contentBlock.description;
                             lessonDoc.dietary.concat(contentBlock.dietary);
                             lessonDoc.skills.concat(contentBlock.skills);
-                            lessonDoc.duration = parseInt(contentBlock.duration);
+                            lessonDoc.duration = parseInt(contentBlock.duration) || 0;
                             lessonDoc.videoUrl = contentBlock.videoUrl;
                             lessonDoc.times.total = parseInt(contentBlock.totalTime);
                             lessonDoc.times.handsOn = parseInt(contentBlock.handsOnTime);
@@ -187,10 +194,11 @@ const generateDocs = async () => {
                             reject(saveLessonResponse);
                         }
                         console.log(`saved lesson: ${lessonDoc.id} `);
-                    })
+                    }
                 }
             })
             resolve('done');
+            console.log("done generating");
         });
     });
 }
