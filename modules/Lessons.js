@@ -65,9 +65,7 @@ exports.getInfoByClassAndIndex = async (req, res) => {
             index: 'lessons',
             id: lessonId
         });
-        if (getLessonResponse.body._source.filter) {
-            response = JSON.stringify(getLessonResponse.body._source.filter((lesson) => !!lesson));
-        }
+        response = JSON.stringify(getLessonResponse.body._source);
     } catch (e) {
         const errMsg = "error in getting lesson's data by class and index";
         console.warn(errMsg);

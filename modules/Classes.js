@@ -32,20 +32,11 @@ exports.getClassList = async (req, res) => {
             index: "classes",
             size: 500,
             body: {
-                query: {
-                    bool: {
-                        must: [],
-                        filter: [{
-                            bool: {
-                                must_not: {
-                                    multi_match: {
-                                        type: "best_fields",
-                                        query: "isStaging = true",
-                                        lenient: true
-                                    }
-                                }
-                            }
-                        }]
+                "query": {
+                    "bool": {
+                        "must": {
+                            "term": { "isStaging": false }
+                        }
                     }
                 }
             }

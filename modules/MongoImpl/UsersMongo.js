@@ -3,7 +3,7 @@ let config = require('../../config');
 config = config[process.env.CONFIG_ENV || "development"];
 console.log("process.env");
 console.log(process.env);
-console.log("CONFIG_ENV = " + process.env.CONFIG_ENV);
+console.log("CONFIG_ENV = " + (process.env.CONFIG_ENV || "development"));
 
 const uri = config.mongo.url;
 const client = new MongoClient(uri, { useNewUrlParser: true });
