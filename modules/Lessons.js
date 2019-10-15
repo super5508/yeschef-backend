@@ -59,7 +59,7 @@ exports.getInfoByClassAndIndex = async (req, res) => {
         });
 
         const classInfoObj = getClassResponse.body._source;
-        const lessonId = classInfoObj.lessons[parseInt(req.params.lessonIndex)];
+        const lessonId = classInfoObj.lessons[parseInt(req.params.lessonIndex) - 1];
 
         const getLessonResponse = await esClient.get({
             index: 'lessons',

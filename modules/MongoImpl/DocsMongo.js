@@ -77,13 +77,13 @@ const generateDocs = async () => {
                     igUrl: "",
                     twUrl: ""
                 };
-
+                if (!classItr.classId) return;
                 Classes.saveClass({
                     id: classItr.classId,
                     about: chef.bio,
                     chefImg: classItr.photo,
                     description: classItr.description,
-                    lessons: classItr.lessonsId.sort ? classItr.lessonsId.sort() : [classItr.lessonId],
+                    lessons: classItr.lessonsId.sort ? classItr.lessonsId.map(lessonId => lessonId.toLowerCase()).sort() : [classItr.lessonsId.toLowerCase()],
                     skills: classItr.techniques,
                     isStaging: classItr.staging,
                     isComingSoon: classItr.comingSoon,
@@ -108,7 +108,7 @@ const generateDocs = async () => {
                     for (const lessonId of classItr.lessonsId) {
                         const lesson = await lessonsCollection.findOne({ lessonId });
                         const lessonDoc = {
-                            id: lessonId,
+                            id: lessonId.toLowerCase(),
                             thumbnail: lesson.thumbnail,
                             cuisine: [],
                             description: "",
