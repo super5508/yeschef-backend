@@ -37,6 +37,10 @@
             {
               "Key": "Name",
               "Value": "yc-be"
+            },
+            {
+              "Key": "type",
+              "Value": "yc-be"
             }
           ]
         }

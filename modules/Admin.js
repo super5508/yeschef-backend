@@ -5,9 +5,12 @@ const docsMongo = require('./MongoImpl/DocsMongo');
 const adminUpdateUser = async (req, res) => {
     const body = req.body;
     if (await isAdmin(req)) {
-        const userRecord = await admin.auth().getUserByEmail(req.params.email);
-        const id = userRecord.uid;
-        UsersMongo.updateUserDataMongo(id, body.data);
+        const emailsList = req.params.email.split(',');
+        emailsList.forEach(async email => {
+            const userRecord = await admin.auth().getUserByEmail(email);
+            const id = userRecord.uid;
+            UsersMongo.updateUserDataMongo(id, body.data);
+        })
         res.send('');
     } else {
         res.status(401).end();
