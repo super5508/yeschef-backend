@@ -47,6 +47,8 @@ start = async () => {
     app.options('*', cors());
 
     app.use(bodyParser.json({ limit: '50mb' }));
+
+    //todo : check if we can remove this section
     app.use(function (req, res, next) {
         //res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');

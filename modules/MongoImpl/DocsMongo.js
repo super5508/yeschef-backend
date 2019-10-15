@@ -67,6 +67,8 @@ const generateDocs = async () => {
             const contentBlocksCollection = client.db("runtime").collection("contentBlocks");
             const suppliesCollection = client.db("runtime").collection("supplies");
             const shorthandCollection = client.db("runtime").collection("shorthand");
+            const stepsCollection = client.db("runtime").collection("steps");
+
             // perform actions on the collection object
             await classesCollection.find().forEach(async (classItr) => {
                 const chefId = classItr.chefId;
@@ -182,8 +184,10 @@ const generateDocs = async () => {
                             // ------------------------------------ step by step
                             await stepsCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (step) => {
                                 stepObj = {
-                                    id: stepId,
-                                    title: "ff"
+                                    id: step.stepId,
+                                    //title: "",
+                                    proTip: step.tip,
+                                    content: step.description
                                 }
                                 lessonDoc.steps.push(stepObj);
                             });
