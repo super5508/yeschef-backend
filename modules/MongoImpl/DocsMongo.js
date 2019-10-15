@@ -116,6 +116,7 @@ const generateDocs = async () => {
                             duration: 1000,
                             supplies: [],
                             shorthand: [],
+                            steps: [],
                             skills: [],
                             times: {},
                             title: lesson.title
@@ -178,7 +179,15 @@ const generateDocs = async () => {
                                 section.items.sort((a, b) => a.order > b.order);
                             })
                             // ------------------------------------ shorthand End
-
+                            // ------------------------------------ step by step
+                            await stepsCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (step) => {
+                                stepObj = {
+                                    id: stepId,
+                                    title:
+                                }
+                                lessonDoc.steps.push(stepObj);
+                            });
+                            // ------------------------------------ step by step END
 
                             const contentBlock = await contentBlocksCollection.findOne({ contentBlockId: lesson.contentBlockId });
                             lessonDoc.cuisine.concat(contentBlock.cuisine);
