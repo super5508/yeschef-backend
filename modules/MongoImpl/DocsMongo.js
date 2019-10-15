@@ -161,7 +161,7 @@ const generateDocs = async () => {
                             // ------------------------------------ shorthand
                             await shorthandCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (shorthand) => {
                                 const section = shorthand.sectionTitle || "Main Dish";
-                                const order = shorthand.sectionNum || 0;
+                                const order = shorthand.sectionNum ? shorthand.sectionNum - 1 : 0;
 
                                 //if the sub dish doesn't exists, create the list for gear / ingredients
                                 lessonDoc.shorthand[order] = lessonDoc.shorthand[order] || { sectionName: section, items: [] };
@@ -172,9 +172,11 @@ const generateDocs = async () => {
                                     details: shorthand.details
                                 }
 
-                                lessonDoc.shorthand[order].items[shorthand.stepNum] = shorthandObj;
-
+                                lessonDoc.shorthand[order].items.push(shorthandObj);
                             });
+                            lessonDoc.shorthand.map(section => {
+                                section.items.sort((a, b) => a.order > b.order);
+                            })
                             // ------------------------------------ shorthand End
 
 
