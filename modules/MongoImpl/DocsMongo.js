@@ -185,6 +185,7 @@ const generateDocs = async () => {
                             lessonDoc.skills.concat(contentBlock.skills);
                             lessonDoc.duration = parseInt(contentBlock.duration) || 0;
                             lessonDoc.videoUrl = contentBlock.videoUrl;
+                            lessonDoc.vimeoUrl = contentBlock.vimeoUrl;
                             lessonDoc.times.total = parseInt(contentBlock.totalTime);
                             lessonDoc.times.handsOn = parseInt(contentBlock.handsOnTime);
                         }
