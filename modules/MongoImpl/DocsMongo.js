@@ -183,7 +183,7 @@ const generateDocs = async () => {
                             await stepsCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (step) => {
                                 stepObj = {
                                     id: stepId,
-                                    title:
+                                    title: "ff"
                                 }
                                 lessonDoc.steps.push(stepObj);
                             });
