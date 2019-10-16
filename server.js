@@ -25,7 +25,7 @@ start = async () => {
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
 
-    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com', 'https://master.d2s02vthyi86tv.amplifyapp.com', 'app-staging.yeschef.me'];
+    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com', 'https://master.d2s02vthyi86tv.amplifyapp.com', 'app-staging.yeschef.me', 'staging.app.yeschef.me', 'app.yeschef.me'];
 
     // Automatically allow cross-origin requests
     app.use(cors({
