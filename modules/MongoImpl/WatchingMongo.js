@@ -28,28 +28,16 @@ const updateWatchingDataMongo = (userId, data) => {
     return new Promise(function (resolve, reject) {
         getConnection().then(async (client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
-            const currentChef = await esClient.search({
-                index: "classes",
-                body: {
-                    "query" : {
-                        "match":{
-                           "_id": data.classId
-                        }
-                    }
-                }
+            const currentChef = await esClient.get({
+                index: 'classes',
+                id: data.classId
             });
-            const chefName = currentChef.body.hits.hits[0]._source.chefName;
-            const currentLesson = await esClient.search({
-                index: "lessons",
-                body: {
-                    "query" : {
-                        "match":{
-                           "_id": `${data.classId}_l${("0" + data.lessonId).slice(-2)}`
-                        }
-                    }
-                }
+            const chefName = currentChef.body._source.chefName;
+            const currentLesson = await esClient.get({
+                index: 'lessons',
+                id: `${data.classId}_l${("0" + data.lessonId).slice(-2)}`
             });
-            const lessonName = currentLesson.body.hits.hits[0]._source.title;
+            const lessonName = currentLesson.body._source.title;
             // perform actions on the collection object
             await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: chefName, lessonName: lessonName } }, { upsert: true })
             resolve('updated');
