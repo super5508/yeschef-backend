@@ -39,8 +39,19 @@ const updateWatchingDataMongo = (userId, data) => {
                 }
             });
             const chefName = currentChef.body.hits.hits[0]._source.chefName;
+            const currentLesson = await esClient.search({
+                index: "lessons",
+                body: {
+                    "query" : {
+                        "match":{
+                           "_id": `${data.classId}_l${("0" + data.lessonId).slice(-2)}`
+                        }
+                    }
+                }
+            });
+            const lessonName = currentLesson.body.hits.hits[0]._source.title;
             // perform actions on the collection object
-            await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: chefName } }, { upsert: true })
+            await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: chefName, lessonName: lessonName } }, { upsert: true })
             resolve('updated');
         });
     });
