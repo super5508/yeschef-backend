@@ -24,8 +24,10 @@ start = async () => {
     // };
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
+    const adminOrigins = ['http://localhost:3001', 'https://production.di5rch2vp2n9y.amplifyapp.com/', 'https://master.di5rch2vp2n9y.amplifyapp.com/'];
+    const webAppOrigins = ['http://localhost:300', 'https://staging.app.yeschef.me', 'https://app.yeschef.me'];
 
-    const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'https://yeschef.me', 'https://master.d3stwmnjf2nisj.amplifyapp.com', 'https://master.d2s02vthyi86tv.amplifyapp.com', 'app-staging.yeschef.me', 'https://staging.app.yeschef.me', 'https://app.yeschef.me'];
+    const allowedOrigins = ['https://yeschef.me'].concat(adminOrigins, webAppOrigins);
 
     // Automatically allow cross-origin requests
     app.use(cors({
