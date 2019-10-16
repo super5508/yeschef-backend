@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
+const { esClient } = require('../ESImpl/esClientWrapper');
 let config = require('../../config');
 config = config[process.env.CONFIG_ENV || "development"];
 console.log("process.env");
@@ -27,10 +28,19 @@ const updateWatchingDataMongo = (userId, data) => {
     return new Promise(function (resolve, reject) {
         getConnection().then(async (client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
-            const chefCollection = client.db("runtime").collection("chefs");
-            const currentChef = await chefCollection.findOne({ classId: data.classId });
+            const currentChef = await esClient.search({
+                index: "classes",
+                body: {
+                    "query" : {
+                        "match":{
+                           "_id": data.classId
+                        }
+                    }
+                }
+            });
+            const chefName = currentChef.body.hits.hits[0]._source.chefName;
             // perform actions on the collection object
-            await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: currentChef.class } }, { upsert: true })
+            await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: chefName } }, { upsert: true })
             resolve('updated');
         });
     });
@@ -45,13 +55,14 @@ const getWatchingDataMongo = (userId) => {
             if (currentUserHistory) {
                 resolve(currentUserHistory);
             } else {
-                const insertedUser = await historyCollection.insertOne({
+                const newHistory = await historyCollection.insertOne({
                     id: userId,
                     classId: "c00",
                     lessonId: "s00",
-                    chefName: "THE WORLD'S BEST CHEFS"
+                    chefName: "THE WORLD'S BEST CHEFS",
+                    lessonName: "TEACH HOME COOKING"
                 });
-                resolve(insertedUser.ops[0]);
+                resolve(newHistory.ops[0]);
             }
         }).catch((err) => {
             reject(err);
