@@ -25,7 +25,7 @@ start = async () => {
     // Create instance
     // let axiosInstance = axios.create(defaultOptions);
     const adminOrigins = ['http://localhost:3001', 'https://production.di5rch2vp2n9y.amplifyapp.com/', 'https://master.di5rch2vp2n9y.amplifyapp.com/'];
-    const webAppOrigins = ['http://localhost:300', 'https://staging.app.yeschef.me', 'https://app.yeschef.me'];
+    const webAppOrigins = ['http://localhost:3000', 'https://staging.app.yeschef.me', 'https://app.yeschef.me'];
 
     const allowedOrigins = ['https://yeschef.me'].concat(adminOrigins, webAppOrigins);
 

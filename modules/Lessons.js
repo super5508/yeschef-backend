@@ -20,7 +20,7 @@ exports.getLiteLessonsByIdList = async (lessonIdsList) => {
         });
         response = getLessonResponse.body.docs.map(lessonObj => {
             return lessonObj._source;
-        });
+        }).filter(lessonObj => lessonObj.permissions === "beta");
     } catch (e) {
         const errMsg = "error in getting lessons data by list of ids";
         console.warn(errMsg);
@@ -68,30 +68,6 @@ exports.getInfoByClassAndIndex = async (req, res) => {
         response = JSON.stringify(getLessonResponse.body._source);
     } catch (e) {
         const errMsg = "error in getting lesson's data by class and index";
-        console.warn(errMsg);
-        console.warn(e);
-        response = errMsg;
-        res.status(500)
-    }
-    res.send(response);
-}
-
-
-exports.getInfo = async (req, res) => {
-    res.set("Cache-Control", "max-age=600");
-    let response;
-    try {
-        const getClassResponse = await esClient.get({
-            index: 'classes',
-            id: req.params.id
-        });
-
-        const classInfoObj = getClassResponse.body._source;
-        const lessonsList = await LessonsModule.getLiteLessonsByIdList(classInfoObj.lessons);
-
-        response = JSON.stringify({ ...classInfoObj, lessons: lessonsList });
-    } catch (e) {
-        const errMsg = "error in getting class's data";
         console.warn(errMsg);
         console.warn(e);
         response = errMsg;

@@ -112,6 +112,7 @@ const generateDocs = async () => {
                         const lessonDoc = {
                             id: lessonId.toLowerCase(),
                             thumbnail: lesson.thumbnail,
+                            permissions: lesson.permissions,
                             cuisine: [],
                             description: "",
                             dietary: [],
