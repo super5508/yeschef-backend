@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
+const { esClient } = require('../ESImpl/esClientWrapper');
 let config = require('../../config');
 config = config[process.env.CONFIG_ENV || "development"];
 console.log("process.env");
@@ -25,17 +26,21 @@ const getConnection = () => {
 
 const updateWatchingDataMongo = (userId, data) => {
     return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
+        getConnection().then(async (client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
+            const currentChef = await esClient.get({
+                index: 'classes',
+                id: data.classId
+            });
+            const chefName = currentChef.body._source.chefName;
+            const currentLesson = await esClient.get({
+                index: 'lessons',
+                id: `${data.classId}_l${("0" + data.lessonId).slice(-2)}`
+            });
+            const lessonName = currentLesson.body._source.title;
             // perform actions on the collection object
-            historyCollection.updateOne({ id: userId },
-                { $set: { ...data } },
-                { upsert: true }).then((result) => {
-                    resolve(result);
-                }).catch((err) => {
-                    reject(err);
-                });
-
+            await historyCollection.updateOne({ id: userId }, { $set: { ...data, chefName: chefName, lessonName: lessonName } }, { upsert: true })
+            resolve('updated');
         });
     });
 };
@@ -43,55 +48,28 @@ const updateWatchingDataMongo = (userId, data) => {
 const getWatchingDataMongo = (userId) => {
     console.log('get watching history of user ' + userId);
     return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
+        getConnection().then(async (client) => {
             const historyCollection = client.db("runtime").collection("userWatching");
-            // perform actions on the collection object
-            const chefCollection = client.db("runtime").collection("classes");
-            historyCollection.findOne({ id: userId }).then((results) => {
-                if (results !== null) {
-                    chefCollection.findOne({ classId: results.classId }).then(res => {
-                        if (res !== null) {
-                            resolve({
-                                ...results,
-                                name: res.name,
-                            });
-                        } else {
-                            resolve(results);
-                        }
-                    }).catch(err => {
-                        reject(err);
-                    });
-                } else {
-                    resolve(results);
-                }
-            }).catch((err) => {
-                reject(err);
-            });
+            const currentUserHistory = await historyCollection.findOne({ id: userId });
+            if (currentUserHistory) {
+                resolve(currentUserHistory);
+            } else {
+                const newHistory = await historyCollection.insertOne({
+                    id: userId,
+                    classId: "c00",
+                    lessonId: "s00",
+                    chefName: "THE WORLD'S BEST CHEFS",
+                    lessonName: "TEACH HOME COOKING"
+                });
+                resolve(newHistory.ops[0]);
+            }
         }).catch((err) => {
             reject(err);
         });
     });
 };
 
-const addNewWatching = (userId) => {
-    console.log('create a new watchHistory for user ' + userId);
-    return new Promise(function (resolve, reject) {
-        getConnection().then((client) => {
-            const historyCollection = client.db("runtime").collection("userWatching");
-            // perform actions on the collection object
-            historyCollection.insertOne({
-                id: userId,
-                lessonId: -1,
-                progress: 0,
-            })
-        }).catch((err) => {
-            reject(err);
-        });
-    });
-}
-
 module.exports = {
   updateWatchingDataMongo,
-  getWatchingDataMongo,
-  addNewWatching
+  getWatchingDataMongo
 }
