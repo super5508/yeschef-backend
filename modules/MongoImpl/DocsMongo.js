@@ -186,7 +186,7 @@ const generateDocs = async () => {
                             // ------------------------------------ supplies End
                             // ------------------------------------ shorthand
                             await shorthandCollection.find({ "contentBlockMainId": lesson.contentBlockId }).forEach(async (shorthand) => {
-                                const section = shorthand.sectionTitle || "Main Dish";
+                                const section = shorthand.sectionNames || "Main Dish";
                                 const order = shorthand.sectionNum ? shorthand.sectionNum - 1 : 0;
 
                                 //if the sub dish doesn't exists, create the list for gear / ingredients
