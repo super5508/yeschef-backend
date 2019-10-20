@@ -33,7 +33,8 @@ const dropCollectionDocsMongo = async (db, collectionName, docIdKey, dataArray) 
         const collection = client.db(db).collection(collectionName);
 
         collection.drop((err, success) => {
-            if (err) {
+            //error code 26 means the collection doesn't exists
+            if (err && err.code != 26) {
                 reject(err);
             } else {
                 collection.insertMany(dataArray, (err, res) => {
