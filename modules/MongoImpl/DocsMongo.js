@@ -27,6 +27,27 @@ const getConnection = () => {
     });
 }
 
+const dropCollectionDocsMongo = async (db, collectionName, docIdKey, dataArray) => {
+    return new Promise(async (resolve, reject) => {
+        const client = await getConnection();
+        const collection = client.db(db).collection(collectionName);
+
+        collection.drop((err, success) => {
+            if (err) {
+                reject(error);
+            } else {
+                collection.insertMany(dataArray, (err, res) => {
+                    if (err) {
+                        reject(error);
+                    } else {
+                        resolve(res);
+                    }
+                })
+            }
+        })
+    });
+}
+
 const replaceDocsMongo = async (db, collectionName, docIdKey, dataArray) => {
     return new Promise(async (resolve, reject) => {
         const client = await getConnection();
@@ -236,5 +257,6 @@ const getDocMongo = (userId) => {
 
 module.exports = {
     replaceDocsMongo,
-    generateDocs
+    generateDocs,
+    dropCollectionDocsMongo
 }
