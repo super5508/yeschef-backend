@@ -34,11 +34,11 @@ const dropCollectionDocsMongo = async (db, collectionName, docIdKey, dataArray) 
 
         collection.drop((err, success) => {
             if (err) {
-                reject(error);
+                reject(err);
             } else {
                 collection.insertMany(dataArray, (err, res) => {
                     if (err) {
-                        reject(error);
+                        reject(err);
                     } else {
                         resolve(res);
                     }
